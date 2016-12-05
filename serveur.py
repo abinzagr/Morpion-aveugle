@@ -33,8 +33,12 @@ while 1:
 			sockfd, addr = server_socket.accept()
 			list_joueur.append(sockfd)
 			print("Client (" + str(addr[1]) + ") connected")
-                #if(list_joueur==2)
-				#	print("premier joueur")
+			if(len(list_joueur)==2):
+				sockfd.send('premier joueur'.encode())
+			elif(len(list_joueur)==3):
+				sockfd.send('second joueur'.encode())
+			else:
+				sockfd.send('spectateur'.encode())
 		else:
 			try:
 				mesg = sock.recv(1024).decode()
