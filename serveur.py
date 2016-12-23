@@ -44,7 +44,6 @@ while 1:
 				mesg = sock.recv(1024).decode()
 			except ConnectionResetError:
 				print("connexion perdue")
-				mesg=''
 			if len(mesg) == 0:	
 				list_joueur.remove(sock)
 				if range(len(list_joueur))==2:

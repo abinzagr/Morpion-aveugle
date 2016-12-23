@@ -13,36 +13,56 @@ if joueur=="premier joueur":
 	data=s_client.recv(1024)
 	grids[0].play(2,int(data))
 grids[1].display()
-while(joueur!="Adversaire Deconnecté"):
-	
-	while grids[0].gameOver() == -1:
-		shot = -1
-		while shot <0 or shot >=NB_CELLS:
+while(1):
+	if(joueur!="Adversaire Deconnecté"):
+		while grids[0].gameOver() == -1:
+			shot = -1
 			while shot <0 or shot >=NB_CELLS:
-				shot = int(input ("quelle case allez-vous jouer ?"))
-				print("cells",grids[0].cells[shot])
-			if (grids[0].cells[shot] != EMPTY):
-				print("Case occupée %d" %shot)
-				grids[1].cells[shot] = grids[0].cells[shot]
-				grids[1].display()
-				shot=-1
-			else:
-				grids[0].play(1,shot)
-				grids[1].play(1, shot)
+				while shot <0 or shot >=NB_CELLS:
+					shot = int(input ("quelle case allez-vous jouer ?"))
+					print("cells",grids[0].cells[shot])
+				if (grids[0].cells[shot] != EMPTY):
+					print("Case occupée %d" %shot)
+					grids[1].cells[shot] = grids[0].cells[shot]
+					grids[1].display()
+					shot=-1
+				else:
+					grids[0].play(1,shot)
+					grids[1].play(1, shot)
+					grids[1].display()
+			s_client.send(str(shot).encode())
+			if grids[0].gameOver() != -1:
+				print("game over")
 				grids[0].display()
-		s_client.send(str(shot).encode())
-		if grids[0].gameOver() != -1:
-			print("game over")
-			grids[0].display()
-			if grids[0].gameOver() == 1:
-				print("You win !")
-			else:
-				print("you loose !")
-		joueur=s_client.recv(1024).decode()		
-		grids[0].play(2,int(joueur))
-		grids[1].play(2,int(joueur))
-		grids[0].display()
-		
-	print("Fermeture de la connexion")
+				if grids[0].gameOver() == 1:
+					print("You win !")
+					break
+				elif grids[0].gameOver() == 2:
+					print("You lose !")
+					break	
+				else:
+					print("match nul !")
+					break
+			joueur=s_client.recv(1024).decode()		
+			grids[0].play(2,int(joueur))
+			#grids[1].play(2,int(joueur))
+			grids[1].display()
+			if grids[0].gameOver() != -1:
+				print("game over")
+				grids[0].display()
+				if grids[0].gameOver() == 1:
+					print("You win !")
+					break
+				elif grids[0].gameOver() == 2:
+					print("You lose !")
+					break		
+				else:
+					print("match nul !")
+					break
+	else:	
+		print("Adversaire deconnecte,vous avez gagne")
+		break
+	print("Partie termine")	
+	break
 
 s_client.close()
