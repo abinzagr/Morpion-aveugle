@@ -26,8 +26,7 @@ while True :
 				shot = -1
 				if(joueur!="spectateur"):
 					while shot <0 or shot >=NB_CELLS:
-						while shot <0 or shot >=NB_CELLS:
-							shot = int(input ("quelle case allez-vous jouer ?"))
+						shot = int(input ("quelle case allez-vous jouer ?"))
 							#print("cells",grids[0].cells[shot])
 						if (grids[0].cells[shot] != EMPTY):
 							print("Case occupée %d" %shot)
@@ -60,13 +59,10 @@ while True :
 						grids[0].display()
 						if grids[0].gameOver() == 1:
 							print("You win !")
-							break
 						elif grids[0].gameOver() == 2:
-							print("You lose !")
-							break		
+							print("You lose !")	
 						else:
 							print("match nul !")
-							break	
 				else:
 					#grids[0].display()
 					
@@ -74,34 +70,33 @@ while True :
 					r=int(rcvspect)
 					if(r>=0 and r<9):
 						if(i%2==0):
-							i+=1
 							grids[0].play(1,int(rcvspect))
 							grids[0].display()
 						else:
 							grids[0].play(2,int(rcvspect))
 							grids[0].display()
-							i+=1	
+						i+=1	
 					if grids[0].gameOver() != -1:
 						print("game over")
 						grids[0].display()
 						if grids[0].gameOver() == 1:
 							s1+=1
 							print("Joueur 1 win !")
-							break
 						elif grids[0].gameOver() == 2:
 							s2+=1
 							print("Joueur 2 win!")
-							null+=1
-							break	
+							null+=1	
 						else:
-							print("match nul !")
-							break										
+							print("match nul !")									
 		else:	
 			print("Adversaire deconnecte,vous avez gagne")
 			break
 		
 		print("Partie termine")
-		replay=int(input ("voulez vous rejouer la partie ? Taper 1 pour 'Oui' ou autre chiffre pour 'Non' "))
+		if(joueur!="spectateur"):
+			replay=int(input ("voulez vous rejouer la partie ? Taper 1 pour 'Oui' ou autre chiffre pour 'Non' "))
+		else:
+			replay=int(input ("voulez vous observer une nouvelle partie ? Taper 1 pour 'Oui' ou autre chiffre pour 'Non'"))
 		print(replay)
 		if(replay!=1):
 			break
