@@ -34,11 +34,11 @@ while replay == 1:
 		first_shot = s_client.recv(1024).decode()
 		grids[0].play(1,int(first_shot))
 
-	if joueur != "Adversaire déconnecté":
+	if joueur != "adversaire deconnecte":
 		i = 0
+		grids[1].display()
 		while grids[0].gameOver() == -1:
 			if joueur != "spectateur":
-				grids[1].display()
 				shot = -1
 				if joueur == "premier joueur": # Numéro du joueur actif
 					j = 1
@@ -57,7 +57,7 @@ while replay == 1:
 					grids[1].display()
 				s_client.send(str(shot).encode())
 				displayWinner(grids[0])
-			
+
 				# Joueur passif
 				if j == 1: # Numéro du joueur passif
 					j = 2
@@ -65,7 +65,7 @@ while replay == 1:
 					j = 1
 				shot = s_client.recv(1024).decode()		
 				grids[0].play(j,int(shot))
-				displayWinner(grids[0])			
+				displayWinner(grids[0])		
 			else:   # Spectateur
 				rcvspect = s_client.recv(1024).decode()
 				r = int(rcvspect)
@@ -79,7 +79,10 @@ while replay == 1:
 				displayWinner(grids[0])									
 	else:	
 		print("Adversaire déconnecté.")
-		
-	replay=int(input ("Voulez vous rejouer une partie ? Taper 1 pour 'Oui' ou un autre chiffre pour 'Non'. "))
+
+	if joueur!="spectateur":
+		replay=int(input ("Voulez vous rejouer une partie ? Taper 1 pour 'Oui' ou un autre chiffre pour 'Non' "))
+	else:
+		replay=int(input ("Voulez vous observer une nouvelle partie ? Taper 1 pour 'Oui' ou un autre chiffre pour 'Non'"))
 
 s_client.close()

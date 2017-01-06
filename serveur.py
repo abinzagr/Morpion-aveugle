@@ -1,22 +1,6 @@
 import socket,select,threading,sys
 from grid import *
 
-# Pour sauvegarde etat grille ?
-"""
-#notif connexion d'un client aux autres clients	
-def notif_connet_joueur(sock,message) :
-	if socket != server_socket and socket != sock:
-            try:
-                print(message)
-                socket.send(message.encode('UTF-8'))
-            except:
-                sock.close()
-                list_joueur.remove(sock)
-
-#envoie grille à un joueur
-"""
-
-
 list_joueur = []
 server_socket = socket.socket(socket.AF_INET6,socket.SOCK_STREAM,proto=0)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -47,12 +31,11 @@ while True:
 			if len(mesg) == 0:
 				list_joueur.remove(sock)
 				if range(len(list_joueur)) == 2:
-					list_joueur[1].send('Adversaire déconnecté'.encode())
+					list_joueur[1].send('adversaire deconnecte'.encode())
 				sock.close()
 			else: # Envoi coup joué
 				for i in range(len(list_joueur)): # Pourrait éviter d'envoyer au serveur ?
                                         if list_joueur[i] != server_socket and list_joueur[i] != sock:
-                                                list_joueur[i].send(mesg.encode())
-						
+                                                list_joueur[i].send(mesg.encode())						
 						
 server_socket.close()
