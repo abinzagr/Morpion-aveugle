@@ -28,9 +28,11 @@ while True:
 				mesg = sock.recv(1024).decode()
 			except ConnectionResetError:
 				print("Connexion perdue.")
-			if len(mesg) == 0:
+			if mesg == "perdu":
+				print("Connexion perdue.")
 				list_joueur.remove(sock)
-				if range(len(list_joueur)) == 2:
+				taille=len(list_joueur)
+				if len(list_joueur) == 2:
 					list_joueur[1].send('adversaire deconnecte'.encode())
 					print("Adversaire déconnecté")
 				sock.close()
