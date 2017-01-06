@@ -20,7 +20,7 @@ while True:
 				sockfd.send('premier joueur'.encode())
 			elif len(list_joueur) == 3:
 				sockfd.send('second joueur'.encode())
-				list_joueur[1].send('adversaire trouve'.encode())
+				list_joueur[1].send('second joueur'.encode())
 			else:
 				sockfd.send('spectateur'.encode())
 		else:
@@ -31,14 +31,19 @@ while True:
 			if mesg == "perdu":
 				print("Connexion perdue.")
 				list_joueur.remove(sock)
-				taille=len(list_joueur)
 				if len(list_joueur) == 2:
 					list_joueur[1].send('adversaire deconnecte'.encode())
 					print("Adversaire déconnecté")
 				sock.close()
-			else: # Envoi coup joué
-				for i in range(1, len(list_joueur)):
-                                        if list_joueur[i] != server_socket and list_joueur[i] != sock:
-                                                list_joueur[i].send(mesg.encode())						
-						
+			else: # Envoi coup joué + lancement d'une nouvelle partie
+				if mesg == "replay":
+					sock.send(mesg.encode())
+					mesg = sock.recv(1024).decode()
+					sock.send(mesg.encode())
+					if mesg == "second joueur":
+						list_joueur[1].send(mesg.encode())
+				else:
+					for i in range(1, len(list_joueur)):
+						if list_joueur[i] != sock:
+							list_joueur[i].send(mesg.encode())
 server_socket.close()
