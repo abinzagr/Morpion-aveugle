@@ -32,9 +32,10 @@ while True:
 				list_joueur.remove(sock)
 				if range(len(list_joueur)) == 2:
 					list_joueur[1].send('adversaire deconnecte'.encode())
+					print("Adversaire déconnecté")
 				sock.close()
 			else: # Envoi coup joué
-				for i in range(len(list_joueur)): # Pourrait éviter d'envoyer au serveur ?
+				for i in range(1, len(list_joueur)):
                                         if list_joueur[i] != server_socket and list_joueur[i] != sock:
                                                 list_joueur[i].send(mesg.encode())						
 						
